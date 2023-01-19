@@ -16,7 +16,7 @@ class node{
     int value_;
 
     node(){left_ = nullptr; right_ = nullptr; value_ = 0;}
-    node(int value){left_ = nullptr; right_ = nullptr; value = value;}
+    node(int value){left_ = nullptr; right_ = nullptr; value_ = value;}
     node(int value, node* right, node* left){left_ = left; right_ = right; value_ = value;}
 
     int& getValue(){
@@ -43,9 +43,11 @@ class node{
         right_ = right;
     }
 
-    // operator *(node* node){
-    //     return node->value_;
-    // }
+    node* operator =(node* rhs){
+        this->left_ = rhs->left_;
+        this->right_ = rhs->right_;
+        this->value_ = rhs->value_;
+    }
 };
 
 #endif
