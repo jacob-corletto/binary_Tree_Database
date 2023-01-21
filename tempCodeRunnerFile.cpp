@@ -1,1 +1,1 @@
-std::cout << answer->value_<< std::endl;
+t1.print(n1);

@@ -55,6 +55,17 @@ class tree{
         return head;
     }
 
+    node* add(node* head){
+        return this->add(head,head->value_);
+    }
+
+    node* add(int value){
+        if(head_ == nullptr){
+            throw std::range_error("please enter head first");
+        }
+        return this->add(head_,value);
+    }
+
     void print(node* head){
         if(head_ == nullptr){ //base case
             throw std::runtime_error("empty");
@@ -64,7 +75,9 @@ class tree{
         
         queue.push_back(head);
         visited.insert(head);
+        std::cout<<"the head: ";
         std::cout << head->value_;
+        std::cout << " ";
 
         while(!queue.empty()){
             node* s = queue.front();
@@ -78,32 +91,46 @@ class tree{
                 if(visited.find(*i) == visited.end() && *i != nullptr){
                     node* current = *i;
                     std::cout<< current->value_;
+                    std::cout<<" ";
                     queue.push_back(*i);
                     visited.insert(*i);
                 }
             }
         }
-
     }
 
-    node* search(node* head, int value){
+    node* searchSubTree(node* head, int value){
         // std::cout<<"entered search ";
         node* current = head;
         while (current != nullptr){
             if(current->value_ == value){
-                // std::cout<<current->value_;
+                std::cout<<current->value_;
                 return current;
             }
             else if(value < current->value_){
                 // std::cout<<"value is smaller "<< std::endl;
                 current = current->left_;
             }
-            else {
+            else{
                 // std::cout<<"value is bigger "<<std::endl;
                 current = current->right_;
             }
         }
         return NULL;
+    }
+    node* search(node* head, int value){
+        if(head->value_ == value){
+            return head;
+        }
+        if(value < head->value_){
+            search(head->left_, value);
+        }
+        else if(value > head->value_){
+            search(head->right_, value);
+        }
+        else{
+            return NULL;
+        }
     }
 
     node* invert(node* head){
