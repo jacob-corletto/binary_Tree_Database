@@ -17,7 +17,7 @@ int main(){
     t1.add(n1,3);
     // t1.search(n1,3);
     // t1.invert(n1);
-    t1.print(n1);
+    t1.printBST(n1);
 
     std::cout<<" "<< std::endl;
     std::cout<<"the size is: ";

@@ -66,7 +66,7 @@ class tree{
         return this->add(head_,value);
     }
 
-    void print(node* head){
+    void printBST(node* head){
         if(head_ == nullptr){ //base case
             throw std::runtime_error("empty");
         }
@@ -75,7 +75,7 @@ class tree{
         
         queue.push_back(head);
         visited.insert(head);
-        std::cout<<"the head: ";
+        std::cout<<"The BST Tree is: ";
         std::cout << head->value_;
         std::cout << " ";
 
@@ -146,6 +146,30 @@ class tree{
             invert(head->right_);
         }
         return head;
+    }
+    bool exists(node* head, int value){
+        if(this->head_ == nullptr){
+            throw std::range_error("there is no root node");
+        }
+        else if(search(head,value) == NULL){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+    void Remove(node* head, int value){
+        if(exists(head,value)== true){ //node exisits
+            node* toRemove = search(head,value);
+
+            if(toRemove->left_ == nullptr && toRemove->right_ == nullptr){ //leaf node
+                size_--;
+                delete search(head,value);
+            }
+            if(toRemove->left_ != nullptr){ //left only
+                
+            }
+        }
     }
 };
 #endif
