@@ -6,20 +6,20 @@
 #include <stdlib.h>
 #include <iostream>
 
-// template <class T>
+template <class T>
 class node{
 
     public:
 
     node* left_;
     node* right_;
-    int value_;
+    T value_;
 
     node(){left_ = nullptr; right_ = nullptr; value_ = 0;}
-    node(int value){left_ = nullptr; right_ = nullptr; value_ = value;}
-    node(int value, node* right, node* left){left_ = left; right_ = right; value_ = value;}
+    node(T value){left_ = nullptr; right_ = nullptr; value_ = value;}
+    node(T value, node* right, node* left){left_ = left; right_ = right; value_ = value;}
 
-    int& getValue(){
+    T& getValue(){
         return value_;
     }
 
@@ -43,11 +43,42 @@ class node{
         right_ = right;
     }
 
-    node* operator =(node* rhs){
+    void operator =(node* rhs){
         this->left_ = rhs->left_;
         this->right_ = rhs->right_;
         this->value_ = rhs->value_;
     }
+    bool operator <(node* rhs){
+        if (this->value_ < rhs->value_){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    bool operator >(node* rhs){
+        if (this->value_ > rhs->value_){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    bool operator ==(node* rhs){
+        if (this->value_ == rhs->value_){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    int operator *(node* rhs){
+        return rhs->getValue();
+    }
+    // friend std::ostream& operator<<(std::ostream& os, node* node) {
+    //     os << node->getValue();
+    //     return os;
+    // }
 };
 
 #endif

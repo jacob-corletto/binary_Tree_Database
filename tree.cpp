@@ -7,89 +7,71 @@
 #include <unordered_set>
 #include <vector>
 #include "node.cpp"
+template <typename T>
 
 class tree{
     public:
-    node* head_;
+    node<T>* root_;
     int size_;
     int balanceFactor_;
 
-    tree(){head_ = nullptr; size_ = 0; balanceFactor_ = 0;}
-    tree(node* head){head_ = head; size_ = 0;balanceFactor_ = 0;}
+    tree(){root_ = nullptr; size_ = 0; balanceFactor_ = 0;}
+    tree(node<T>* root){root_ = root; size_ = 0;balanceFactor_ = 0;}
 
     int getSize(){
-        return size_;
+        return this->size_;
     }
-
-    node* add(node* head,int value){
-        if(this->head_ == nullptr){ //first
-            // std::cout<<"added to top";
-            head_ = head;
+    node<T>* getRoot(){
+        return this->root_;
+    }
+    void setRoot(node<T>* root){
+        this->root_ = root;
+    }
+    void printRoot(){
+        std::cout<<this->root_->getValue()<<std::endl;
+    }
+    //add with root_ and value
+    void insert(T value){
+        this->root_ = insertRecursive(root_,value);
+    }
+    node<T>* insertRecursive(node<T>* current,T value){
+        if(current == nullptr){ //first
             size_++;
-            return head;
+            return new node<T>(value);
         }
-       else if(value < head->value_ ){ //go left
-            if(head->left_ == nullptr){
-                node* left = new node(value);
-                head->left_ = left;
-                size_++;
-                // std::cout<<"went left"<<std::endl;
-                // std::cout<< left->value_ << std::endl;
-                return left;
-            }
-            else{
-                add(head->left_, value);
-            }
+        if (value < current->value_){
+            current->left_ = insertRecursive(current->left_,value);
         }
-        else if(value > head->value_){ // go right
-            if(head->right_ == nullptr){
-                node* right = new node(value);
-                head->right_ = right;
-                size_++;
-                return right;
-            }
-            else{
-                add(head->right_,value);
-            }
+        else if (value > current->value_){
+            current->right_ = insertRecursive(current->right_,value);
         }
-        return head;
+        return current;
     }
 
-    node* add(node* head){
-        return this->add(head,head->value_);
-    }
-
-    node* add(int value){
-        if(head_ == nullptr){
-            throw std::range_error("please enter head first");
-        }
-        return this->add(head_,value);
-    }
-
-    void printBST(node* head){
-        if(head_ == nullptr){ //base case
+    void printBST(T root_){
+        if(root_ == nullptr){ //base case
             throw std::runtime_error("empty");
         }
-        std::unordered_set<node*> visited;//setting up visited list
-        std::list<node*> queue; //setting up queue
+        std::unordered_set<node<T>*> visited;//setting up visited list
+        std::list<node<T>*> queue; //setting up queue
         
-        queue.push_back(head);
-        visited.insert(head);
+        queue.push_back(root_);
+        visited.insert(root_);
         std::cout<<"The BST Tree is: ";
-        std::cout << head->value_;
+        std::cout << root_->value_;
         std::cout << " ";
 
         while(!queue.empty()){
-            node* s = queue.front();
+            T s = queue.front();
             queue.pop_front();
 
-            std::vector<node*> children;
+            std::vector<T> children;
             children.push_back(s->left_);
             children.push_back(s->right_);
             
             for(auto i = children.begin(); i != children.end(); i++){
                 if(visited.find(*i) == visited.end() && *i != nullptr){
-                    node* current = *i;
+                    T current = *i;
                     std::cout<< current->value_;
                     std::cout<<" ";
                     queue.push_back(*i);
@@ -99,12 +81,11 @@ class tree{
         }
     }
 
-    node* searchSubTree(node* head, int value){
+    node<T>* searchInterative(node<T>* root_, int value){
         // std::cout<<"entered search ";
-        node* current = head;
+        node<T>* current = root_;
         while (current != nullptr){
             if(current->value_ == value){
-                std::cout<<current->value_;
                 return current;
             }
             else if(value < current->value_){
@@ -118,53 +99,53 @@ class tree{
         }
         return NULL;
     }
-    node* search(node* head, int value){
-        if(head->value_ == value){
-            return head;
+    node<T>* searchRecursive(node<T>* root_, int value){
+        if(root_->value_ == value){
+            return root_;
         }
-        if(value < head->value_){
-            search(head->left_, value);
+        if(value < root_->value_){
+            searchRecursive(root_->left_, value);
         }
-        else if(value > head->value_){
-            search(head->right_, value);
+        else if(value > root_->value_){
+            searchRecursive(root_->right_, value);
         }
         else{
             return NULL;
         }
     }
 
-    node* invert(node* head){
-        if(head == nullptr){
+    T invert(T root_){
+        if(root_ == nullptr){
             return NULL;
         }
         else{//right to left && left to right
-            node* temp = head->left_;
-            head->left_ = head->right_;
-            head->right_ = temp;
+            T temp = root_->left_;
+            root_->left_ = root_->right_;
+            root_->right_ = temp;
 
-            invert(head->left_);
-            invert(head->right_);
+            invert(root_->left_);
+            invert(root_->right_);
         }
-        return head;
+        return root_;
     }
-    bool exists(node* head, int value){
-        if(this->head_ == nullptr){
+    bool exists(T root_, int value){
+        if(this->root_ == nullptr){
             throw std::range_error("there is no root node");
         }
-        else if(search(head,value) == NULL){
+        else if(search(root_,value) == NULL){
             return false;
         }
         else{
             return true;
         }
     }
-    void Remove(node* head, int value){
-        if(exists(head,value)== true){ //node exisits
-            node* toRemove = search(head,value);
+    void Remove(T root_, int value){
+        if(exists(root_,value)== true){ //node exisits
+            T toRemove = search(root_,value);
 
             if(toRemove->left_ == nullptr && toRemove->right_ == nullptr){ //leaf node
                 size_--;
-                delete search(head,value);
+                delete search(root_,value);
             }
             if(toRemove->left_ != nullptr){ //left only
                 
