@@ -23,6 +23,10 @@ class node{
         return value_;
     }
 
+    void printValue(){
+        std::cout << this->value_ << std::endl;
+    }
+
     void setValue(int value){
         value_ = value;
     }
@@ -75,10 +79,10 @@ class node{
     int operator *(node* rhs){
         return rhs->getValue();
     }
-    // friend std::ostream& operator<<(std::ostream& os, node* node) {
-    //     os << node->getValue();
-    //     return os;
-    // }
+    friend std::ostream& operator<<(std::ostream& os, node* node) {
+        os << node->getValue();
+        return os;
+    }
 };
 
 #endif

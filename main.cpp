@@ -3,25 +3,19 @@
 #include "tree.cpp"
 
 int main(){
-
-    int value;
-    // std::cout<<"please enter number"<< std::endl;
-    // std::cin>>value;
-    // std::cout<< value;
-    std::cout << "hello" << std::endl; 
-    node* n1 = new node(5);
-    tree t1;
-    t1.add(n1);
-    t1.add(n1,4);
-    t1.add(6);
-    t1.add(n1,3);
-    // t1.search(n1,3);
-    // t1.invert(n1);
-    t1.printBST(n1);
-
+    std::cout << "Testing Tree capabilities" << std::endl; 
+    tree<int> t1;
+    t1.insert(5);
+    t1.insert(6);
+    t1.insert(3);
+    node<int>* found = t1.search(3);
+    std::cout<<"the inorder tree is: ";
+    t1.printInOrder();
     std::cout<<" "<< std::endl;
-    std::cout<<"the size is: ";
-    std::cout << t1.getSize() << std::endl;
+    std::cout<<"the root is: "<<t1.getRoot()<<std::endl;
+    std::cout<<"the value is: "<<found<<std::endl;
+    // t1.invert(n1);
 
+    std::cout<<"the size is: "<< t1.getSize()<<std::endl;
     return 0;
 }
