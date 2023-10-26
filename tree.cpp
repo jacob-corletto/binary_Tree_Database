@@ -22,7 +22,7 @@ class tree{
         return this->size_;
     }
     node<T>* getRoot(){
-        return this->root_;
+        return root_;
     }
     void setRoot(node<T>* root){
         this->root_ = root;
@@ -31,21 +31,25 @@ class tree{
         std::cout<<this->root_->getValue()<<std::endl;
     }
     //add with root_ and value
-    void insert(T value){
-        this->root_ = insertRecursive(root_,value);
-    }
-    node<T>* insertRecursive(node<T>* current,T value){
-        if(current == nullptr){ //first
+    node<T>* insert(T value) {
+        if (root_ == nullptr) {
+            root_ = new node<T>(value);
             size_++;
-            return new node<T>(value);
+            return root_;
+        } else {
+            return insertRecursive(root_, value);
         }
-        if (value < current->value_){
-            current->left_ = insertRecursive(current->left_,value);
+    }
+    node<T>* insertRecursive(node<T>*& current,T value){
+        if (current == nullptr) { // First
+            size_++;
+            current = new node<T>(value);
+            return current;
+        } else if (value < current->value_) {
+            return insertRecursive(current->left_, value);
+        } else {
+            return insertRecursive(current->right_, value);
         }
-        else if (value > current->value_){
-            current->right_ = insertRecursive(current->right_,value);
-        }
-        return current;
     }
     void printInOrder(){
         printInOrderRecursive(this->root_);
@@ -64,7 +68,6 @@ class tree{
     node<T>* searchRecursive(node<T>* current, T value){
         if(current == nullptr){ //first
             return nullptr;
-            //throw std::runtime_error("Node not found.");
         }
         if (current->value_ == value){
             return current;

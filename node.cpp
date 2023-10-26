@@ -79,10 +79,10 @@ class node{
     int operator *(node* rhs){
         return rhs->getValue();
     }
-    friend std::ostream& operator<<(std::ostream& os, node* node) {
-        os << node->getValue();
-        return os;
-    }
+    // friend std::ostream& operator<<(std::ostream& os, node* node) {
+    //     os << node->getValue();
+    //     return os;
+    // }
 };
 
 #endif
