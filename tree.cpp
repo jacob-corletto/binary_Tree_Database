@@ -79,43 +79,123 @@ class tree{
         return searchRecursive(current->right_, value);
     }
 
-    T invert(T root_){
-        if(root_ == nullptr){
-            return NULL;
+    tree<T>* invert(node<T>* current){
+        if(current == nullptr){
+            return this;
         }
         else{//right to left && left to right
-            T temp = root_->left_;
-            root_->left_ = root_->right_;
-            root_->right_ = temp;
+            node<T>* temp = current->left_;
+            current->left_ = current->right_;
+            current->right_ = temp;
 
-            invert(root_->left_);
-            invert(root_->right_);
+            invert(current->left_);
+            invert(current->right_);
         }
-        return root_;
+        return this;
     }
     bool exists(T root_, int value){
         if(this->root_ == nullptr){
             throw std::range_error("there is no root node");
         }
-        else if(search(root_,value) == NULL){
+        else if(search(root_,value) == nullptr){
             return false;
         }
         else{
             return true;
         }
     }
-    void Remove(T root_, int value){
+
+    T height(node<T>* current){
+        // base case tree is empty
+        if (current == nullptr)
+            return 0;
+ 
+        // If tree is not empty then
+        // height = 1 + max of left height
+        // and right heights
+        return 1 + std::max(height(current->left_), height(current->right_));
+    }
+    int getBalanceFactor(){
+        if (root_ == nullptr){
+            return balanceFactor_;
+        } else {
+            return getBalanceFactor(root_);
+        }
+    }
+    
+    int getBalanceFactor(node<T>* current) {
+        if (current == nullptr) {
+            return 0;
+        }
+        int leftHeight = height(current->left_);
+        int rightHeight = height(current->right_);
+
+        balanceFactor_ = leftHeight - rightHeight;
+
+        return balanceFactor_;
+    }
+    // Returns true if binary tree
+    // with root as root is height-balanced
+    bool isBalanced(){
+        if(root_ == nullptr){
+            return true;
+        } else {
+            return isBalanced(root_);
+        }
+    }
+    bool isBalanced(node<T>* current){
+        // for height of left subtree
+        int lh;
+    
+        // for height of right subtree
+        int rh;
+    
+        // If tree is empty then return true
+        if (current == nullptr)
+            return 1;
+    
+        // Get the height of left and right sub trees
+        lh = height(current->left_);
+        rh = height(current->right_);
+    
+        if (abs(lh - rh) <= 1 && isBalanced(current->left_)
+            && isBalanced(current->right_))
+            return 1;
+    
+        // If we reach here then tree is not height-balanced
+        return 0;
+    }
+    void Reomove(T value){
+        if (root_ == nullptr){
+            std::cout << "the tree is empty \n"; 
+        } else {
+            Remove(root_,value);
+        }
+    }
+
+    void Remove(node<T>* root_, T value){
         if(exists(root_,value)== true){ //node exisits
-            T toRemove = search(root_,value);
+            node<T>* toRemove = this->search(value);
+            node<T>* parent = nullptr;
 
             if(toRemove->left_ == nullptr && toRemove->right_ == nullptr){ //leaf node
                 size_--;
-                delete search(root_,value);
+                delete this->search(value);
             }
-            if(toRemove->left_ != nullptr){ //left only
-                
+            if(toRemove->left_ != nullptr && toRemove->right_ == nullptr){ //left only
+                node<T>* temp = toRemove->left_;
             }
+        } else {
+            std::cout << "the node does not exist " << std::endl;
         }
+    }
+
+    node<T>* findMin(node<T>* current) {
+        while (current->left_ != nullptr) {
+            current = current->left_;
+        }
+
+        return current;
     }
 };
 #endif
