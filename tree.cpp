@@ -21,14 +21,14 @@ class tree{
     int getSize(){
         return this->size_;
     }
-    node<T>* getRoot(){
+    node<T>* getRootNode(){
         return root_;
+    }
+    T getRoot(){
+        return this->root_->value_;
     }
     void setRoot(node<T>* root){
         this->root_ = root;
-    }
-    void printRoot(){
-        std::cout<<this->root_->getValue()<<std::endl;
     }
     //add with root_ and value
     node<T>* insert(T value) {
@@ -51,7 +51,7 @@ class tree{
             return insertRecursive(current->right_, value);
         }
     }
-    void printInOrder(){
+    void printTree(){
         printInOrderRecursive(this->root_);
     }
     void printInOrderRecursive(node<T>* current){
@@ -93,16 +93,23 @@ class tree{
         }
         return this;
     }
-    bool exists(T root_, int value){
+    bool exists(int value){
         if(this->root_ == nullptr){
             throw std::range_error("there is no root node");
         }
-        else if(search(root_,value) == nullptr){
+        else if(search(value) == nullptr){
             return false;
         }
-        else{
-            return true;
+
+        return true;
+    }
+    T height(){
+        if (this->root_ == nullptr){
+            return 0;
         }
+
+        return height(root_);
+        
     }
 
     T height(node<T>* current){
@@ -165,29 +172,43 @@ class tree{
         // If we reach here then tree is not height-balanced
         return 0;
     }
-    void Reomove(T value){
+    void remove(T value){
         if (root_ == nullptr){
             std::cout << "the tree is empty \n"; 
-        } else {
-            Remove(root_,value);
+        }else if (exists(value) == false){
+            std::cout << "value does not exist";
+        }else{
+            remove(root_,value);
         }
     }
 
-    void Remove(node<T>* root_, T value){
-        if(exists(root_,value)== true){ //node exisits
-            node<T>* toRemove = this->search(value);
-            node<T>* parent = nullptr;
-
-            if(toRemove->left_ == nullptr && toRemove->right_ == nullptr){ //leaf node
-                size_--;
-                delete this->search(value);
-            }
-            if(toRemove->left_ != nullptr && toRemove->right_ == nullptr){ //left only
-                node<T>* temp = toRemove->left_;
-            }
-        } else {
-            std::cout << "the node does not exist " << std::endl;
+    node<T>* remove(node<T>* current, T value){
+        if(current->getValue() > value){
+            current->left_ = remove(current->left_,value);
         }
+        else if(current->getValue() < value){ 
+            current->right_ = remove(current->right_,value);
+        }
+        else{
+            if (current->left_ == nullptr){
+                node<T>* temp = current->right_;
+                delete current;
+                this->size_ -= 1;
+                return temp;
+            }
+            else if (current->right_ == nullptr){
+                node<T>* temp = current->left_;
+                delete current;
+                this->size_ -= 1;
+                return temp;
+            }
+            else {
+                node<T>* successor = findMin(current->right_);
+                current->setValue(successor->getValue());
+                current->right_ = remove(current->right_,successor->getValue());
+            }
+        }
+        return current;
     }
 
     node<T>* findMin(node<T>* current) {

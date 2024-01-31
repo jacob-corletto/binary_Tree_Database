@@ -1,12 +1,12 @@
-rm *.o
-rm *.out
+#!/bin/bash
 
-g++ -c -m64 -Wall -g -o node.o node.cpp -fpie -std=c++2a
+# Compile the C++ program
+g++ -std=c++11 main.cpp -o main
 
-g++ -c -m64 -Wall -g -o main.o main.cpp -fpie -std=c++2a
-
-g++ -c -m64 -Wall -g -o tree.o tree.cpp -fpie -std=c++2a
-
-g++ -m64 -g -o run.out  main.o node.o tree.o -fpie -std=c++2a
-
-./run.out
+# Check if compilation was successful
+if [ $? -eq 0 ]; then
+    # Run the compiled program
+    ./my_program
+else
+    echo "Compilation failed. Please check your C++ code."
+fi

@@ -10,11 +10,11 @@ int main(){
     std::cout<<"inserted " << t1.insert(11)->getValue() << std::endl;
     // std::cout<<"inserted " << t1.insert(12)->getValue() << std::endl;
 
-    node<int>* root = t1.getRoot();
+    node<int>* root = t1.getRootNode();
     node<int>* searched_node = t1.search(8);
 
     if (root != nullptr) {
-        std::cout << "The root value is: " << root->value_ << std::endl;
+        std::cout << "The root value is: " << t1.getRoot() << std::endl;
     } else {
         std::cout << "The tree is empty, so there is no root." << std::endl;
     }
@@ -35,15 +35,42 @@ int main(){
 
     std::cout << "the size is: " << t1.getSize() << std::endl;
 
+    std::cout << "the height of the tree is: " << t1.height() << std::endl;
+
     std::cout << "the tree in order is " << std::endl;
 
-    t1.printInOrder();
+    t1.printTree();
 
     std::cout << "\n";
 
-    std::cout << "inverting the tree" << std::endl;
+    std::cout << "11 exists " << t1.exists(11) << std::endl;
 
-    t1.invert(root)->printInOrder();
+    // std::cout << "inverting the tree" << std::endl;
+
+    // t1.invert(root)->printTree();
+
+    // std::cout << "\n";
+
+    std::cout << "remove 10 " << std::endl;
+
+    std::cout << "\n";
+
+    std::cout << "the root is: " << t1.getRoot() << std::endl;
+
+    t1.remove(999);
+
+    std::cout << "\n";
+
+    t1.printTree();
+
+    std::cout << "\n";
+
+    std::cout << t1.getSize() << std::endl;
+
+    std::cout << "the root is: " << t1.getRoot() << std::endl;
     
+    // tree<int> t2;
+    // t2.insert(3);
+    // t2.printTree();
     return 0;
 }

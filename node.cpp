@@ -19,7 +19,7 @@ class node{
     node(T value){left_ = nullptr; right_ = nullptr; value_ = value;}
     node(T value, node* right, node* left){left_ = left; right_ = right; value_ = value;}
 
-    T& getValue(){
+    T getValue(){
         return value_;
     }
 
