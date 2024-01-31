@@ -3,3 +3,6 @@
 
 # Ignore macOS debug symbol files
 main.dSYM/
+
+#ignore main file
+main
